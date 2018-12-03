@@ -1,0 +1,14 @@
+{
+  "name": "adventofcode2018",
+  "version": "1.0.0",
+  "description": "Advent of Code 2018 challenge",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Dima000",
+  "license": "ISC",
+  "dependencies": {
+    "lodash": "^4.17.11"
+  }
+}
