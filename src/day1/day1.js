@@ -1,18 +1,19 @@
 let path = require('path');
 let inputPath = path.join(__dirname, 'input.txt');
-let readFile = require(path.join(__dirname, '/../../utils/readFile.js'));
+let readFile = require(path.join(__dirname, '..', '..', 'utils', 'readFile.js'));
 
 readFile(inputPath, (data) => {
-  console.log('First Task: ' + task1(data));
-  console.log('Second Task: ' + task2(data));
+  const normalData = data.trim().split('\r\n').map(item => +item);
+
+  console.log('First Task: ' + task1(normalData));
+  console.log('Second Task: ' + task2(normalData));
 });
 
 
 function task1(data) {
-  const normaData = data.trim().split('\r\n').map(item => +item);
   let counter = 0;
 
-  for (let num of normaData) {
+  for (let num of data) {
     counter += +num;
   }
 
@@ -20,12 +21,11 @@ function task1(data) {
 }
 
 function task2(data) {
-  const normaData = data.trim().split('\r\n').map(item => +item);
   let counter = 0;
   let results = new Set();
 
   while (true) {
-    for (let num of normaData) {
+    for (let num of data) {
       counter += num;
 
       if (results.has(counter)) {

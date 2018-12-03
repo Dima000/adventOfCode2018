@@ -3,22 +3,22 @@ let _ = require('lodash');
 const isTest = false;
 
 let inputPath = path.join(__dirname, isTest ? 'input.test.txt' : 'input.txt');
-let readFile = require(path.join(__dirname, '/../../utils/readFile.js'));
+let readFile = require(path.join(__dirname, '..', '..', 'utils', 'readFile.js'));
 
 readFile(inputPath, (data) => {
-  console.log('First Task: ' + task1(data));
-  console.log('Second Task: ' + task2(data));
+  const normalData = data.trim().split('\r\n');
+
+  console.log('First Task: ' + task1(normalData));
+  console.log('Second Task: ' + task2(normalData));
 });
 
 
 function task1(data) {
-  const normaData = data.trim().split('\r\n');
-
   let boxMap;
   let twoLetters = 0;
   let threeLetters = 0;
 
-  for (let id of normaData) {
+  for (let id of data) {
     boxMap = new Map();
 
     for (let c of id) {
@@ -44,14 +44,13 @@ function task1(data) {
 }
 
 function task2(data) {
-  const normaData = data.trim().split('\r\n');
 
-  for (let i = 0; i < normaData.length - 1; i++) {
-    for (let j = i + 1; j < normaData.length; j++) {
-      const index = isSameStr(normaData[i], normaData[j]);
+  for (let i = 0; i < data.length - 1; i++) {
+    for (let j = i + 1; j < data.length; j++) {
+      const index = isSameStr(data[i], data[j]);
 
       if (typeof index === 'number') {
-        return getResultString(normaData[i], index);
+        return getResultString(data[i], index);
       }
     }
   }
