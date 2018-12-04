@@ -81,13 +81,3 @@ Your puzzle answer was `bpacnmglhizqygfsjixtkwudr`.
 
 Both parts of this puzzle are complete! They provide two gold stars:
 \*\*
-
-At this point, you should [return to your advent calendar](/2018) and
-try another puzzle.
-
-If you still want to see it, you can [get your puzzle input](2/input).
-
-You can also [Shareon
-[Twitter](https://twitter.com/intent/tweet?text=I%27ve+completed+%22Inventory+Management+System%22+%2D+Day+2+%2D+Advent+of+Code+2018&url=https%3A%2F%2Fadventofcode%2Ecom%2F2018%2Fday%2F2&related=ericwastl&hashtags=AdventOfCode)
-[Reddit](http://www.reddit.com/submit?url=https%3A%2F%2Fadventofcode%2Ecom%2F2018%2Fday%2F2&title=I%27ve+completed+%22Inventory+Management+System%22+%2D+Day+2+%2D+Advent+of+Code+2018)]
-this puzzle.
