@@ -17,6 +17,39 @@ readFile(inputPath, (data) => {
 const regex = new RegExp(/(\d+) @ (\d+),(\d+): (\d+)x(\d+)/);
 
 function task1(data) {
+  let { maxWidth, maxHeight, matrix } = processData(data);
+
+  let overlaps = 0;
+  for (let i = 0; i < maxWidth; i++) {
+    for (let k = 0; k < maxHeight; k++) {
+      if (matrix[i][k] > 1) {
+        overlaps += 1;
+      }
+    }
+  }
+
+  return overlaps;
+}
+
+function task2(data) {
+  let { dataMap, matrix } = processData(data);
+
+  for (let rect of dataMap.values()) {
+    let isValid = true;
+    for (let i = rect.leftOffset; i < rect.leftOffset + rect.width; i++) {
+      for (let k = rect.topOffset; k < rect.topOffset + rect.height; k++) {
+        isValid = isValid && matrix[i][k] === 1;
+      }
+    }
+
+    if(isValid) {
+      return rect.id
+    }
+  }
+}
+
+
+function processData(data) {
   const dataMap = new Map();
   let maxWidth = 0;
   let maxHeight = 0;
@@ -42,8 +75,8 @@ function task1(data) {
     }
   }
 
-  const matrix = matrixOfZeros(maxWidth, maxHeight);
 
+  const matrix = matrixOfZeros(maxWidth, maxHeight);
 
   for (let rect of dataMap.values()) {
     for (let i = rect.leftOffset; i < rect.leftOffset + rect.width; i++) {
@@ -53,18 +86,10 @@ function task1(data) {
     }
   }
 
-  let overlaps = 0;
-  for (let i = 0; i < maxWidth; i++) {
-    for (let k = 0; k < maxHeight; k++) {
-      if (matrix[i][k] > 1) {
-        overlaps += 1;
-      }
-    }
-  }
-
-  return overlaps;
-}
-
-function task2(data) {
-
+  return {
+    dataMap,
+    maxHeight,
+    maxWidth,
+    matrix
+  };
 }
