@@ -7,7 +7,7 @@ let readFile = require(path.join(__dirname, '..', '..', 'utils', 'readFile.js'))
 let { matrixOfZeros } = require(path.join(__dirname, '..', '..', 'utils', 'matrix.js'));
 
 readFile(inputPath, (data) => {
-  const lines = data.trim().split('\r\n');
+  const lines = data.trim().split('\n');
 
   console.log('First Task: ' + task1(lines));
   console.log('Second Task: ' + task2(lines));

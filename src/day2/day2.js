@@ -6,7 +6,7 @@ let inputPath = path.join(__dirname, isTest ? 'input.test.txt' : 'input.txt');
 let readFile = require(path.join(__dirname, '..', '..', 'utils', 'readFile.js'));
 
 readFile(inputPath, (data) => {
-  const normalData = data.trim().split('\r\n');
+  const normalData = data.trim().split('\n');
 
   console.log('First Task: ' + task1(normalData));
   console.log('Second Task: ' + task2(normalData));

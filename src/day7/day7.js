@@ -6,17 +6,17 @@ const DELAY = isTest ? 0 : 60;
 
 let inputPath = path.join(__dirname, isTest ? 'input.test.txt' : 'input.txt');
 let readFile = require(path.join(__dirname, '..', '..', 'utils', 'readFile.js'));
-let { matrixOfZeros } = require(path.join(__dirname, '..', '..', 'utils', 'matrix.js'));
+let { logResult } = require(path.join(__dirname, '..', '..', 'utils', 'general.js'));
 
-readFile(inputPath, (data) => {
-  const parsedData = data.trim().split('\n');
+readFile(inputPath, inputText => {
+  const data = inputText.trim().split('\n');
 
   console.time('Time Task1');
-  console.log('First Task Result: ' + task1(parsedData));
+  logResult(task1(data), 1);
   console.timeEnd('Time Task1');
 
   console.time('Time Task2');
-  console.log('Second Task: ' + task2(parsedData));
+  logResult(task2(data), 2);
   console.timeEnd('Time Task2');
 });
 
