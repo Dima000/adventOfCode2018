@@ -1,52 +1,67 @@
 <main>
-<article class="day-desc"><h2>--- Day 4: Repose Record ---</h2><p>You've <span title="Yes, 'sneaked'. 'Snuck' didn't appear in English until the 1800s.">sneaked</span> into another supply closet - this time, it's across from the prototype suit manufacturing lab. You need to sneak inside and fix the issues with the suit, but there's a guard stationed outside the lab, so this is as close as you can safely get.</p>
-<p>As you search the closet for anything that might help, you discover that you're not the first person to want to sneak in.  Covering the walls, someone has spent an hour starting every midnight for the past few months secretly observing this guard post!  They've been writing down the ID of <em>the one guard on duty that night</em> - the Elves seem to have decided that one guard was enough for the overnight shift - as well as when they fall asleep or wake up while at their post (your puzzle input).</p>
-<p>For example, consider the following records, which have already been organized into chronological order:</p>
-<pre><code>[1518-11-01 00:00] Guard #10 begins shift
-[1518-11-01 00:05] falls asleep
-[1518-11-01 00:25] wakes up
-[1518-11-01 00:30] falls asleep
-[1518-11-01 00:55] wakes up
-[1518-11-01 23:58] Guard #99 begins shift
-[1518-11-02 00:40] falls asleep
-[1518-11-02 00:50] wakes up
-[1518-11-03 00:05] Guard #10 begins shift
-[1518-11-03 00:24] falls asleep
-[1518-11-03 00:29] wakes up
-[1518-11-04 00:02] Guard #99 begins shift
-[1518-11-04 00:36] falls asleep
-[1518-11-04 00:46] wakes up
-[1518-11-05 00:03] Guard #99 begins shift
-[1518-11-05 00:45] falls asleep
-[1518-11-05 00:55] wakes up
+<article class="day-desc"><h2>--- Day 7: The Sum of Its Parts ---</h2><p>You find yourself standing on a snow-covered coastline; apparently, you landed a little off course.  The region is too hilly to see the North Pole from here, but you do spot some Elves that seem to be trying to unpack something that washed ashore. It's quite cold out, so you decide to risk creating a paradox by asking them for directions.</p>
+<p>"Oh, are you the search party?" Somehow, you can understand whatever Elves from the year 1018 speak; you assume it's <a href="/2015/day/6">Ancient Nordic Elvish</a>. Could the device on your wrist also be a translator? "Those clothes don't look very warm; take this." They hand you a heavy coat.</p>
+<p>"We do need to find our way back to the North Pole, but we have higher priorities at the moment. You see, believe it or not, this box contains something that will solve all of Santa's transportation problems - at least, that's what it looks like from the pictures in the instructions."  It doesn't seem like they can read whatever language it's in, but you can: "Sleigh kit. <span title="Just some oak and some pine and a handful of Norsemen.">Some assembly required.</span>"</p>
+<p>"'Sleigh'? What a wonderful name! You must help us assemble this 'sleigh' at once!" They start excitedly pulling more parts out of the box.</p>
+<p>The instructions specify a series of <em>steps</em> and requirements about which steps must be finished before others can begin (your puzzle input). Each step is designated by a single letter. For example, suppose you have the following instructions:</p>
+<pre><code>Step C must be finished before step A can begin.
+Step C must be finished before step F can begin.
+Step A must be finished before step B can begin.
+Step A must be finished before step D can begin.
+Step B must be finished before step E can begin.
+Step D must be finished before step E can begin.
+Step F must be finished before step E can begin.
 </code></pre>
-<p>Timestamps are written using <code>year-month-day hour:minute</code> format. The guard falling asleep or waking up is always the one whose shift most recently started. Because all asleep/awake times are during the midnight hour (<code>00:00</code> - <code>00:59</code>), only the minute portion (<code>00</code> - <code>59</code>) is relevant for those events.</p>
-<p>Visually, these records show that the guards are asleep at these times:</p>
-<pre><code>Date   ID   Minute
-            000000000011111111112222222222333333333344444444445555555555
-            012345678901234567890123456789012345678901234567890123456789
-11-01  #10  .....####################.....#########################.....
-11-02  #99  ........................................##########..........
-11-03  #10  ........................#####...............................
-11-04  #99  ....................................##########..............
-11-05  #99  .............................................##########.....
+<p>Visually, these requirements look like this:</p>
+<pre><code>
+  --&gt;A---&gt;B--
+ /    \      \
+C      --&gt;D-----&gt;E
+ \           /
+  ----&gt;F-----
 </code></pre>
-<p>The columns are Date, which shows the month-day portion of the relevant day; ID, which shows the guard on duty that day; and Minute, which shows the minutes during which the guard was asleep within the midnight hour.  (The Minute column's header shows the minute's ten's digit in the first row and the one's digit in the second row.) Awake is shown as <code>.</code>, and asleep is shown as <code>#</code>.</p>
-<p>Note that guards count as asleep on the minute they fall asleep, and they count as awake on the minute they wake up. For example, because Guard #10 wakes up at 00:25 on 1518-11-01, minute 25 is marked as awake.</p>
-<p>If you can figure out the guard most likely to be asleep at a specific time, you might be able to trick that guard into working tonight so you can have the best chance of sneaking in.  You have two strategies for choosing the best guard/minute combination.</p>
-<p><em>Strategy 1:</em> Find the guard that has the most minutes asleep. What minute does that guard spend asleep the most?</p>
-<p>In the example above, Guard #10 spent the most minutes asleep, a total of 50 minutes (20+25+5), while Guard #99 only slept for a total of 30 minutes (10+10+10). Guard #<em>10</em> was asleep most during minute <em>24</em> (on two days, whereas any other minute the guard was asleep was only seen on one day).</p>
-<p>While this example listed the entries in chronological order, your entries are in the order you found them. You'll need to organize them before they can be analyzed.</p>
-<p><em>What is the ID of the guard you chose multiplied by the minute you chose?</em> (In the above example, the answer would be <code>10 * 24 = 240</code>.)</p>
+<p>Your first goal is to determine the order in which the steps should be completed. If more than one step is ready, choose the step which is first alphabetically. In this example, the steps would be completed as follows:</p>
+<ul>
+<li>Only <em><code>C</code></em> is available, and so it is done first.</li>
+<li>Next, both <code>A</code> and <code>F</code> are available. <em><code>A</code></em> is first alphabetically, so it is done next.</li>
+<li>Then, even though <code>F</code> was available earlier, steps <code>B</code> and <code>D</code> are now also available, and <em><code>B</code></em> is the first alphabetically of the three.</li>
+<li>After that, only <code>D</code> and <code>F</code> are available. <code>E</code> is not available because only some of its prerequisites are complete. Therefore, <em><code>D</code></em> is completed next.</li>
+<li><em><code>F</code></em> is the only choice, so it is done next.</li>
+<li>Finally, <em><code>E</code></em> is completed.</li>
+</ul>
+<p>So, in this example, the correct order is <em><code>CABDFE</code></em>.</p>
+<p><em>In what order should the steps in your instructions be completed?</em></p>
 </article>
-<p>Your puzzle answer was <code>94542</code>.</p><article class="day-desc"><h2 id="part2">--- Part Two ---</h2><p><em>Strategy 2:</em> Of all guards, which guard is most frequently asleep on the same minute?</p>
-<p>In the example above, Guard #<em>99</em> spent minute <em>45</em> asleep more than any other guard or minute - three times in total. (In all other cases, any guard spent any minute asleep at most twice.)</p>
-<p><em>What is the ID of the guard you chose multiplied by the minute you chose?</em> (In the above example, the answer would be <code>99 * 45 = 4455</code>.)</p>
+<p>Your puzzle answer was <code>CQSWKZFJONPBEUMXADLYIGVRHT</code>.</p><article class="day-desc"><h2 id="part2">--- Part Two ---</h2><p>As you're about to begin construction, four of the Elves offer to help.  "The sun will set soon; it'll go faster if we work together."  Now, you need to account for multiple people working on steps simultaneously. If multiple steps are available, workers should still begin them in alphabetical order.</p>
+<p>Each step takes 60 seconds plus an amount corresponding to its letter: A=1, B=2, C=3, and so on. So, step A takes <code>60+1=61</code> seconds, while step Z takes <code>60+26=86</code> seconds. No time is required between steps.</p>
+<p>To simplify things for the example, however, suppose you only have help from one Elf (a total of two workers) and that each step takes 60 fewer seconds (so that step A takes 1 second and step Z takes 26 seconds). Then, using the same instructions as above, this is how each second would be spent:</p>
+<pre><code>Second   Worker 1   Worker 2   Done
+   0        C          .        
+   1        C          .        
+   2        C          .        
+   3        A          F       C
+   4        B          F       CA
+   5        B          F       CA
+   6        D          F       CAB
+   7        D          F       CAB
+   8        D          F       CAB
+   9        D          .       CABF
+  10        E          .       CABFD
+  11        E          .       CABFD
+  12        E          .       CABFD
+  13        E          .       CABFD
+  14        E          .       CABFD
+  15        .          .       CABFDE
+</code></pre>
+<p>Each row represents one second of time.  The Second column identifies how many seconds have passed as of the beginning of that second.  Each worker column shows the step that worker is currently doing (or <code>.</code> if they are idle).  The Done column shows completed steps.</p>
+<p>Note that the order of the steps has changed; this is because steps now take time to finish and multiple workers can begin multiple steps simultaneously.</p>
+<p>In this example, it would take <em>15</em> seconds for two workers to complete these steps.</p>
+<p>With <em>5</em> workers and the <em>60+ second</em> step durations described above, <em>how long will it take to complete all of the steps?</em></p>
 </article>
-<p>Your puzzle answer was <code>50966</code>.</p><p class="day-success">Both parts of this puzzle are complete! They provide two gold stars: **</p>
+<p>Your puzzle answer was <code>914</code>.</p><p class="day-success">Both parts of this puzzle are complete! They provide two gold stars: **</p>
 <p>At this point, you should <a href="/2018">return to your advent calendar</a> and try another puzzle.</p>
-<p>If you still want to see it, you can <a href="4/input" target="_blank">get your puzzle input</a>.</p>
+<p>If you still want to see it, you can <a href="7/input" target="_blank">get your puzzle input</a>.</p>
 <p>You can also <span class="share">[Share<span class="share-content">on
-  <a href="https://twitter.com/intent/tweet?text=I%27ve+completed+%22Repose+Record%22+%2D+Day+4+%2D+Advent+of+Code+2018&amp;url=https%3A%2F%2Fadventofcode%2Ecom%2F2018%2Fday%2F4&amp;related=ericwastl&amp;hashtags=AdventOfCode" target="_blank">Twitter</a>
-  <a href="http://www.reddit.com/submit?url=https%3A%2F%2Fadventofcode%2Ecom%2F2018%2Fday%2F4&amp;title=I%27ve+completed+%22Repose+Record%22+%2D+Day+4+%2D+Advent+of+Code+2018" target="_blank">Reddit</a></span>]</span> this puzzle.</p>
+  <a href="https://twitter.com/intent/tweet?text=I%27ve+completed+%22The+Sum+of+Its+Parts%22+%2D+Day+7+%2D+Advent+of+Code+2018&amp;url=https%3A%2F%2Fadventofcode%2Ecom%2F2018%2Fday%2F7&amp;related=ericwastl&amp;hashtags=AdventOfCode" target="_blank">Twitter</a>
+  <a href="http://www.reddit.com/submit?url=https%3A%2F%2Fadventofcode%2Ecom%2F2018%2Fday%2F7&amp;title=I%27ve+completed+%22The+Sum+of+Its+Parts%22+%2D+Day+7+%2D+Advent+of+Code+2018" target="_blank">Reddit</a></span>]</span> this puzzle.</p>
 </main>
