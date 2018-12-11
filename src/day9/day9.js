@@ -19,9 +19,11 @@ readFile(inputPath, inputText => {
   console.timeEnd('Time Task2');
 });
 
+// ------ START HERE : task1 -------
 function task1(totalPlayers, lastMarble) {
 
   const scores = new Array(totalPlayers).fill(0);
+  // Initialize linked list
   let current = node(0, null, null);
   current.prev = current;
   current.next = current;
@@ -32,6 +34,7 @@ function task1(totalPlayers, lastMarble) {
   while (marble <= lastMarble) {
     if (!isSpecial(marble)) {
 
+      // Add new node between 1 and 2 next marbles
       const shift1 = current.next;
       const shift2 = current.next.next;
       const newNode = node(marble, shift1, shift2);
@@ -49,6 +52,7 @@ function task1(totalPlayers, lastMarble) {
       const removed7Marble = toRemove.value;
       scores[player] += marble + removed7Marble;
 
+      // Update neighbor nodes after node removal
       const prev = toRemove.prev;
       prev.next = toRemove.next;
       const next = toRemove.next;
