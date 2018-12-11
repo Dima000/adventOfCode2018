@@ -1,4 +1,4 @@
-###Advent of Code 2018
+### Advent of Code 2018
 
 #### Install Dependencies
 Run ``yarn install`` or ``npm install`` in root folder (where ``package.json`` file is located)
