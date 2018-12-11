@@ -28,7 +28,6 @@ function task1(totalPlayers, lastMarble) {
 
   let marble = 1;
   let player = 1;
-  let arrayLength = 1;
 
   while (marble <= lastMarble) {
     if (!isSpecial(marble)) {
@@ -40,8 +39,6 @@ function task1(totalPlayers, lastMarble) {
       shift1.next = newNode;
       shift2.prev = newNode;
       current = newNode;
-
-      arrayLength += 1;
 
     } else {
       let toRemove = current;
