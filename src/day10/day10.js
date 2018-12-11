@@ -1,5 +1,5 @@
+/* SHOULD BE RUN IN TERMINAL WITH HORIZONTAL SCROLL */
 let path = require('path');
-let _ = require('lodash');
 const isTest = false;
 
 let inputPath = path.join(__dirname, isTest ? 'input.test.txt' : 'input.txt');
@@ -19,26 +19,16 @@ const regex = /<([ \d-]+), ([ \d-]+)>.*<([ \d-]+), ([ \d-]+)>/;
 
 function task1(data) {
   const points = [];
-  let maxX = 0;
-  let maxY = 0;
 
+  //Find and store all points
   for (let line of data) {
     const match = regex.exec(line).map(i => +i);
-    const [fullMatch, posX, posY, speedX, speedY] = match;
+    const [fullMatch, posX, posY, veloX, veloY] = match;
 
     points.push({
-      position: {
-        x: posX,
-        y: posY
-      },
-      velocity: {
-        x: speedX,
-        y: speedY
-      }
+      position: { x: posX, y: posY },
+      velocity: { x: veloX, y: veloY }
     });
-
-    maxX = Math.max(maxX, posX);
-    maxY = Math.max(maxY, posY);
   }
 
 
@@ -53,6 +43,8 @@ function task1(data) {
     movePoints(points);
     const newArea = spreadArea(points);
 
+    // The points will converge up to the state when they form the letters
+    // Afterwards they diverge so the area starts to increase again
     if (newArea.value > area.value) {
       movePointsBack(points);
       break;
@@ -96,6 +88,7 @@ function movePointsBack(points) {
   }
 }
 
+// 'spreadArea' finds the area that bounds the furthest input points
 function spreadArea(points) {
   let minX;
   let minY;
