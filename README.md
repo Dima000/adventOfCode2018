@@ -1,6 +1,7 @@
 ### Advent of Code 2018
 
 <pre>
+    <a href="/2018/day/12" class="calendar-day12 calendar-verycomplete">   |      | )          |     |                  |  <span class="calendar-day">12</span> <span class="calendar-mark-complete">*</span><span class="calendar-mark-verycomplete">*</span></a>
     <a href="https://adventofcode.com/2018/day/11" class="calendar-day11 calendar-verycomplete">   |      |     |            |      |           |  <span class="calendar-day">11</span> <span class="calendar-mark-complete">*</span><span class="calendar-mark-verycomplete">*</span></a>
     <a href="https://adventofcode.com/2018/day/10" class="calendar-day10 calendar-verycomplete">    -  -           - -         -                   <span class="calendar-day">10</span> <span class="calendar-mark-complete">*</span><span class="calendar-mark-verycomplete">*</span></a>
     <a href="https://adventofcode.com/2018/day/9" class="calendar-day9 calendar-verycomplete">                                   <span class="calendar-color-r">_</span>     <span class="calendar-color-r">__</span>        <span class="calendar-day"> 9</span> <span class="calendar-mark-complete">*</span><span class="calendar-mark-verycomplete">*</span></a>

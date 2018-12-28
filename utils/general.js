@@ -5,4 +5,9 @@ function logResult(result, taskNr) {
   console.log(`${name} Task Result:\x1b[36m`, result, '\x1b[0m');
 }
 
+function charCount(str, char = '#') {
+  const match = str.match(new RegExp(char, 'g'));
+  return match ? match.length : 0;
+}
+
 module.exports.logResult = logResult;
