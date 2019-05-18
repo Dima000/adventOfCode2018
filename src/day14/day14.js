@@ -63,6 +63,10 @@ function task2(inputNumber) {
     //add new recipes
     if (sum > 9) {
       arrayRecipes.push(1);
+      const lastSequence = arrayRecipes.slice(arrayRecipes.length - inputSequence.length, arrayRecipes.length);
+      if (_.isEqual(lastSequence, inputSequence)) {
+        break;
+      }
       arrayRecipes.push(sum % 10);
     } else {
       arrayRecipes.push(sum);
