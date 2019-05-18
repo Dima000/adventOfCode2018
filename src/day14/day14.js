@@ -52,67 +52,33 @@ function task1(maxNumberOfRecipes) {
 function task2(inputNumber) {
   const CHUNK_MAX = 1000;
   const inputSequence = _.reverse(digitArray(inputNumber));
-  const arrayRecipes = [[3, 7]];
-  let chunk = 0;
+  const arrayRecipes = [3, 7];
   let worker1 = 0;
   let worker2 = 1;
   let counter = 0;
 
   while (1) {
-    const val1 = getValue(arrayRecipes, worker1, CHUNK_MAX);
-    const val2 = getValue(arrayRecipes, worker2, CHUNK_MAX);
-    let sum = val1 + val2;
+    let sum = arrayRecipes[worker1] + arrayRecipes[worker2];
 
     //add new recipes
     if (sum > 9) {
-      arrayRecipes[chunk].push(1);
-      arrayRecipes[chunk].push(sum % 10);
+      arrayRecipes.push(1);
+      arrayRecipes.push(sum % 10);
     } else {
-      arrayRecipes[chunk].push(sum);
+      arrayRecipes.push(sum);
     }
 
-    const totalLength = totalLenght(arrayRecipes, chunk, CHUNK_MAX);
     //replace workerIndexes
-    const worker1Aux = (worker1 + getValue(arrayRecipes, worker1, CHUNK_MAX) + 1) % totalLength;
-    const worker2Aux = (worker2 + getValue(arrayRecipes, worker2, CHUNK_MAX) + 1) % totalLength;
+    worker1 = (worker1 + arrayRecipes[worker1] + 1) % arrayRecipes.length;
+    worker2 = (worker2 + arrayRecipes[worker2] + 1) % arrayRecipes.length;
 
-    if (isNaN(worker1Aux) || isNaN(worker2Aux)) {
-      debugger
-    }
-
-    worker1 = worker1Aux;
-    worker2 = worker2Aux;
-
-
-    const lastSequence = arrayRecipes[chunk].slice(arrayRecipes[chunk].length - inputSequence.length, arrayRecipes[chunk].length);
+    const lastSequence = arrayRecipes.slice(arrayRecipes.length - inputSequence.length, arrayRecipes.length);
     if (_.isEqual(lastSequence, inputSequence)) {
       break;
-    }
-    if (counter % CHUNK_MAX === 0) {
-      // console.log(arrayRecipes.length);
-      // console.log(worker1, worker2);
-    }
-
-    if (arrayRecipes[chunk].length >= CHUNK_MAX) {
-      const extra = arrayRecipes[chunk].slice(CHUNK_MAX + 1, arrayRecipes[chunk].length);
-      arrayRecipes.push(extra);
-      chunk++;
     }
 
     counter++;
   }
 
-  const totalLength = totalLenght(arrayRecipes, chunk, CHUNK_MAX);
-  return totalLength - inputSequence.length;
-}
-
-function getValue(array, workerIndex, chunksMax) {
-  const chunk = Math.floor(workerIndex / chunksMax);
-  const index = workerIndex % chunksMax;
-
-  return array[chunk][index];
-}
-
-function totalLenght(arrayRecipes, chunk, chunkMax) {
-  return (arrayRecipes.length - 1) * chunkMax + arrayRecipes[chunk].length;
+  return arrayRecipes.length - inputSequence.length;
 }
