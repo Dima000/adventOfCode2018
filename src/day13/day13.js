@@ -35,17 +35,13 @@ const ROADS = [HORIZONTAL, VERTICAL, EAST, WEST];
 function task1(data) {
   const matrix = data.split('\n');
   const X = matrix.length;
-  const MAP = initMap(matrix);
+  const { MAP } = initMap(matrix);
   let tickNumber = 0;
-  // printMap(MAP);
-  debugger
 
   try {
     while (1) {
       tick(MAP, X, tickNumber);
-      // printMap(MAP);
       tickNumber += 1;
-      debugger
     }
   } catch (e) {
     const { x, y } = e;
@@ -54,13 +50,36 @@ function task1(data) {
 }
 
 function task2(data) {
+  const matrix = data.split('\n');
+  const X = matrix.length;
+  let { MAP, cartNumber } = initMap(matrix);
+  let tickNumber = 0;
+
+  while (1) {
+    const crashes = tick(MAP, X, tickNumber, true);
+    tickNumber += 1;
+    cartNumber -= crashes.number;
+
+    if (cartNumber === 1) {
+      break;
+    }
+  }
+
+  for (let x = 0; x < X; x++) {
+    const y = _.findIndex(MAP[x], item => item.cart.dir);
+    if (y >= 0) {
+      return `${y},${x} ::Cart at (y,x)`
+    }
+  }
 
 }
 
 function initMap(matrix) {
-  return matrix.map(row => {
+  let cartNumber = 0;
+  let MAP = matrix.map(row => {
     return row.split('').filter(c => c !== '\r').map(char => {
       if (char === UP || char === DOWN) {
+        cartNumber++;
         return {
           road: VERTICAL,
           cart: {
@@ -71,6 +90,7 @@ function initMap(matrix) {
       }
 
       if (char === LEFT || char === RIGHT) {
+        cartNumber++;
         return {
           road: HORIZONTAL,
           cart: {
@@ -86,9 +106,13 @@ function initMap(matrix) {
       }
     })
   });
+
+  return { MAP, cartNumber }
 }
 
-function tick(MAP, X, tickNumber) {
+function tick(MAP, X, tickNumber, modeTask2) {
+  let crashes = { number: 0 };
+
   for (let x = 0; x < X; x++) {
     const Y = MAP[x].length;
     for (let y = 0; y < Y; y++) {
@@ -102,41 +126,35 @@ function tick(MAP, X, tickNumber) {
 
       if (current.cart.dir === RIGHT) {
         let next = MAP[x][y + 1];
-        if (next.cart.dir) {
-          throw { x, y: y + 1 };
-        }
 
+        handleCrash(current, next, x, y + 1, modeTask2, crashes);
         handleNextRoad(current, next, { [WEST]: DOWN, [EAST]: UP });
       }
 
       if (current.cart.dir === LEFT) {
         let next = MAP[x][y - 1];
-        if (next.cart.dir) {
-          throw { x, y: y - 1 };
-        }
 
+        handleCrash(current, next, x, y - 1, modeTask2, crashes);
         handleNextRoad(current, next, { [WEST]: UP, [EAST]: DOWN });
       }
 
       if (current.cart.dir === UP) {
         let next = MAP[x - 1][y];
-        if (next.cart.dir) {
-          throw { x: x - 1, y };
-        }
 
+        handleCrash(current, next, x - 1, y, modeTask2, crashes);
         handleNextRoad(current, next, { [WEST]: LEFT, [EAST]: RIGHT });
       }
 
       if (current.cart.dir === DOWN) {
         let next = MAP[x + 1][y];
-        if (next.cart.dir) {
-          throw { x: x + 1, y };
-        }
 
+        handleCrash(current, next, x + 1, y, modeTask2, crashes);
         handleNextRoad(current, next, { [WEST]: RIGHT, [EAST]: LEFT });
       }
     }
   }
+
+  return crashes;
 }
 
 function handleIntersection({ cart }) {
@@ -159,6 +177,16 @@ function handleNextRoad(current, next, directions) {
 
   next.cart = current.cart;
   current.cart = {};
+}
+
+function handleCrash(current, next, x, y, modeTask2, crashes) {
+  if (next.cart.dir && modeTask2) {
+    current.cart = {};
+    next.cart = {};
+    crashes.number += 2;
+  } else if (next.cart.dir) {
+    throw { x, y };
+  }
 }
 
 function printMap(MAP) {

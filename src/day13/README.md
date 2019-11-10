@@ -1,45 +1,195 @@
 <main>
-<article class="day-desc"><h2>--- Day 1: Chronal Calibration ---</h2><p>"We've detected some temporal anomalies," one of Santa's Elves at the <span title="It's about as big on the inside as you expected.">Temporal Anomaly Research and Detection Instrument Station</span> tells you. She sounded pretty worried when she called you down here. "At 500-year intervals into the past, someone has been changing Santa's history!"</p>
-<p>"The good news is that the changes won't propagate to our time stream for another 25 days, and we have a device" - she attaches something to your wrist - "that will let you fix the changes with no such propagation delay. It's configured to send you 500 years further into the past every few days; that was the best we could do on such short notice."</p>
-<p>"The bad news is that we are detecting roughly <em>fifty</em> anomalies throughout time; the device will indicate fixed anomalies with <em class="star">stars</em>. The other bad news is that we only have one device and you're the best person for the job! Good lu--" She taps a button on the device and you suddenly feel like you're falling. To save Christmas, you need to get all <em class="star">fifty stars</em> by December 25th.</p>
-<p>Collect stars by solving puzzles.  Two puzzles will be made available on each day in the advent calendar; the second puzzle is unlocked when you complete the first.  Each puzzle grants <em class="star">one star</em>. Good luck!</p>
-<p>After feeling like you've been falling for a few minutes, you look at the device's tiny screen. "Error: Device must be calibrated before first use. Frequency drift detected. Cannot maintain destination lock." Below the message, the device shows a sequence of changes in frequency (your puzzle input). A value like <code>+6</code> means the current frequency increases by <code>6</code>; a value like <code>-3</code> means the current frequency decreases by <code>3</code>.</p>
-<p>For example, if the device displays frequency changes of <code>+1, -2, +3, +1</code>, then starting from a frequency of zero, the following changes would occur:</p>
-<ul>
-<li>Current frequency <code>&nbsp;0</code>, change of <code>+1</code>; resulting frequency <code>&nbsp;1</code>.</li>
-<li>Current frequency <code>&nbsp;1</code>, change of <code>-2</code>; resulting frequency <code>-1</code>.</li>
-<li>Current frequency <code>-1</code>, change of <code>+3</code>; resulting frequency <code>&nbsp;2</code>.</li>
-<li>Current frequency <code>&nbsp;2</code>, change of <code>+1</code>; resulting frequency <code>&nbsp;3</code>.</li>
-</ul>
-<p>In this example, the resulting frequency is <code>3</code>.</p>
-<p>Here are other example situations:</p>
-<ul>
-<li><code>+1, +1, +1</code> results in <code>&nbsp;3</code></li>
-<li><code>+1, +1, -2</code> results in <code>&nbsp;0</code></li>
-<li><code>-1, -2, -3</code> results in <code>-6</code></li>
-</ul>
-<p>Starting with a frequency of zero, <em>what is the resulting frequency</em> after all of the changes in frequency have been applied?</p>
+<article class="day-desc"><h2>--- Day 13: Mine Cart Madness ---</h2><p>A crop of this size requires significant logistics to transport produce, soil, fertilizer, and so on. The Elves are very busy pushing things around in <em>carts</em> on some kind of rudimentary system of tracks they've come up with.</p>
+<p>Seeing as how cart-and-track systems don't appear in recorded history for <span title="Time anomalies! How do they work?!">another 1000 years</span>, the Elves seem to be making this up as they go along. They haven't even figured out how to avoid collisions yet.</p>
+<p>You map out the tracks (your puzzle input) and see where you can help.</p>
+<p>Tracks consist of straight paths (<code>|</code> and <code>-</code>), curves (<code>/</code> and <code>\</code>), and intersections (<code>+</code>). Curves connect exactly two perpendicular pieces of track; for example, this is a closed loop:</p>
+<pre><code>/----\
+|    |
+|    |
+\----/
+</code></pre>
+<p>Intersections occur when two perpendicular paths cross. At an intersection, a cart is capable of turning left, turning right, or continuing straight.  Here are two loops connected by two intersections:</p>
+<pre><code>/-----\
+|     |
+|  /--+--\
+|  |  |  |
+\--+--/  |
+   |     |
+   \-----/
+</code></pre>
+<p>Several <em>carts</em> are also on the tracks. Carts always face either up (<code>^</code>), down (<code>v</code>), left (<code>&lt;</code>), or right (<code>&gt;</code>). (On your initial map, the track under each cart is a straight path matching the direction the cart is facing.)</p>
+<p>Each time a cart has the option to turn (by arriving at any intersection), it turns <em>left</em> the first time, goes <em>straight</em> the second time, turns <em>right</em> the third time, and then repeats those directions starting again with <em>left</em> the fourth time, <em>straight</em> the fifth time, and so on. This process is independent of the particular intersection at which the cart has arrived - that is, the cart has no per-intersection memory.</p>
+<p>Carts all move at the same speed; they take turns moving a single step at a time. They do this based on their <em>current location</em>: carts on the top row move first (acting from left to right), then carts on the second row move (again from left to right), then carts on the third row, and so on.  Once each cart has moved one step, the process repeats; each of these loops is called a <em>tick</em>.</p>
+<p>For example, suppose there are two carts on a straight track:</p>
+<pre><code>|  |  |  |  |
+v  |  |  |  |
+|  v  v  |  |
+|  |  |  v  X
+|  |  ^  ^  |
+^  ^  |  |  |
+|  |  |  |  |
+</code></pre>
+<p>First, the top cart moves. It is facing down (<code>v</code>), so it moves down one square.  Second, the bottom cart moves.  It is facing up (<code>^</code>), so it moves up one square. Because all carts have moved, the first tick ends.  Then, the process repeats, starting with the first cart.  The first cart moves down, then the second cart moves up - right into the first cart, colliding with it! (The location of the crash is marked with an <code>X</code>.) This ends the second and last tick.</p><p>
+</p><p>Here is a longer example:</p>
+<pre><code>/-&gt;-\        
+|   |  /----\
+| /-+--+-\  |
+| | |  | v  |
+\-+-/  \-+--/
+  \------/   
+
+/--&gt;\        
+|   |  /----\
+| /-+--+-\  |
+| | |  | |  |
+\-+-/  \-&gt;--/
+  \------/   
+
+/---v        
+|   |  /----\
+| /-+--+-\  |
+| | |  | |  |
+\-+-/  \-+&gt;-/
+  \------/   
+
+/---\        
+|   v  /----\
+| /-+--+-\  |
+| | |  | |  |
+\-+-/  \-+-&gt;/
+  \------/   
+
+/---\        
+|   |  /----\
+| /-&gt;--+-\  |
+| | |  | |  |
+\-+-/  \-+--^
+  \------/   
+
+/---\        
+|   |  /----\
+| /-+&gt;-+-\  |
+| | |  | |  ^
+\-+-/  \-+--/
+  \------/   
+
+/---\        
+|   |  /----\
+| /-+-&gt;+-\  ^
+| | |  | |  |
+\-+-/  \-+--/
+  \------/   
+
+/---\        
+|   |  /----&lt;
+| /-+--&gt;-\  |
+| | |  | |  |
+\-+-/  \-+--/
+  \------/   
+
+/---\        
+|   |  /---&lt;\
+| /-+--+&gt;\  |
+| | |  | |  |
+\-+-/  \-+--/
+  \------/   
+
+/---\        
+|   |  /--&lt;-\
+| /-+--+-v  |
+| | |  | |  |
+\-+-/  \-+--/
+  \------/   
+
+/---\        
+|   |  /-&lt;--\
+| /-+--+-\  |
+| | |  | v  |
+\-+-/  \-+--/
+  \------/   
+
+/---\        
+|   |  /&lt;---\
+| /-+--+-\  |
+| | |  | |  |
+\-+-/  \-&lt;--/
+  \------/   
+
+/---\        
+|   |  v----\
+| /-+--+-\  |
+| | |  | |  |
+\-+-/  \&lt;+--/
+  \------/   
+
+/---\        
+|   |  /----\
+| /-+--v-\  |
+| | |  | |  |
+\-+-/  ^-+--/
+  \------/   
+
+/---\        
+|   |  /----\
+| /-+--+-\  |
+| | |  X |  |
+\-+-/  \-+--/
+  \------/   
+</code></pre>
+<p>After following their respective paths for a while, the carts eventually crash.  To help prevent crashes, you'd like to know <em>the location of the first crash</em>. Locations are given in <code>X,Y</code> coordinates, where the furthest left column is <code>X=0</code> and the furthest top row is <code>Y=0</code>:</p>
+<pre><code>           111
+ 0123456789012
+0/---\        
+1|   |  /----\
+2| /-+--+-\  |
+3| | |  X |  |
+4\-+-/  \-+--/
+5  \------/   
+</code></pre>
+<p>In this example, the location of the first crash is <code><em>7,3</em></code>.</p>
 </article>
-<p>Your puzzle answer was <code>510</code>.</p><article class="day-desc"><h2 id="part2">--- Part Two ---</h2><p>You notice that the device repeats the same frequency change list over and over. To calibrate the device, you need to find the first frequency it reaches <em>twice</em>.</p>
-<p>For example, using the same list of changes above, the device would loop as follows:</p>
-<ul>
-<li>Current frequency <code>&nbsp;0</code>, change of <code>+1</code>; resulting frequency <code>&nbsp;1</code>.</li>
-<li>Current frequency <code>&nbsp;1</code>, change of <code>-2</code>; resulting frequency <code>-1</code>.</li>
-<li>Current frequency <code>-1</code>, change of <code>+3</code>; resulting frequency <code>&nbsp;2</code>.</li>
-<li>Current frequency <code>&nbsp;2</code>, change of <code>+1</code>; resulting frequency <code>&nbsp;3</code>.</li>
-<li>(At this point, the device continues from the start of the list.)</li>
-<li>Current frequency <code>&nbsp;3</code>, change of <code>+1</code>; resulting frequency <code>&nbsp;4</code>.</li>
-<li>Current frequency <code>&nbsp;4</code>, change of <code>-2</code>; resulting frequency <code>&nbsp;2</code>, which has already been seen.</li>
-</ul>
-<p>In this example, the first frequency reached twice is <code>2</code>. Note that your device might need to repeat its list of frequency changes many times before a duplicate frequency is found, and that duplicates might be found while in the middle of processing the list.</p>
-<p>Here are other examples:</p>
-<ul>
-<li><code>+1, -1</code> first reaches <code>0</code> twice.</li>
-<li><code>+3, +3, +4, -2, -4</code> first reaches <code>10</code> twice.</li>
-<li><code>-6, +3, +8, +5, -6</code> first reaches <code>5</code> twice.</li>
-<li><code>+7, +7, -2, -7, -4</code> first reaches <code>14</code> twice.</li>
-</ul>
-<p><em>What is the first frequency your device reaches twice?</em></p>
+<p>Your puzzle answer was <code>64,57</code>.</p><article class="day-desc"><h2 id="part2">--- Part Two ---</h2><p>There isn't much you can do to prevent crashes in this ridiculous system. However, by predicting the crashes, the Elves know where to be in advance and <em>instantly remove the two crashing carts</em> the moment any crash occurs.</p>
+<p>They can proceed like this for a while, but eventually, they're going to run out of carts. It could be useful to figure out where the last cart that <em>hasn't</em> crashed will end up.</p>
+<p>For example:</p>
+<pre><code>/&gt;-&lt;\  
+|   |  
+| /&lt;+-\
+| | | v
+\&gt;+&lt;/ |
+  |   ^
+  \&lt;-&gt;/
+
+/---\  
+|   |  
+| v-+-\
+| | | |
+\-+-/ |
+  |   |
+  ^---^
+
+/---\  
+|   |  
+| /-+-\
+| v | |
+\-+-/ |
+  ^   ^
+  \---/
+
+/---\  
+|   |  
+| /-+-\
+| | | |
+\-+-/ <em>^</em>
+  |   |
+  \---/
+</code></pre>
+<p>After four very expensive crashes, a tick ends with only one cart remaining; its final location is <code><em>6,4</em></code>.</p>
+<p><em>What is the location of the last cart</em> at the end of the first tick where it is the only cart left?</p>
 </article>
-<p>Your puzzle answer was <code>69074</code>.</p><p class="day-success">Both parts of this puzzle are complete! They provide two gold stars: **</p>
+<p>Your puzzle answer was <code>136,8</code>.</p><p class="day-success">Both parts of this puzzle are complete! They provide two gold stars: **</p>
+<p>At this point, you should <a href="/2018">return to your Advent calendar</a> and try another puzzle.</p>
+<p>If you still want to see it, you can <a href="13/input" target="_blank">get your puzzle input</a>.</p>
+<p>You can also <span class="share">[Share<span class="share-content">on
+  <a href="https://twitter.com/intent/tweet?text=I%27ve+completed+%22Mine+Cart+Madness%22+%2D+Day+13+%2D+Advent+of+Code+2018&amp;url=https%3A%2F%2Fadventofcode%2Ecom%2F2018%2Fday%2F13&amp;related=ericwastl&amp;hashtags=AdventOfCode" target="_blank">Twitter</a>
+  <a href="http://www.reddit.com/submit?url=https%3A%2F%2Fadventofcode%2Ecom%2F2018%2Fday%2F13&amp;title=I%27ve+completed+%22Mine+Cart+Madness%22+%2D+Day+13+%2D+Advent+of+Code+2018" target="_blank">Reddit</a></span>]</span> this puzzle.</p>
 </main>
