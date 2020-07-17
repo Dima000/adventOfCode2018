@@ -9,7 +9,7 @@
   "author": "Dima000",
   "license": "ISC",
   "dependencies": {
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.19",
     "mathjs": "^5.3.1"
   }
 }
